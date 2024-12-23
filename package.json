@@ -18,7 +18,11 @@
     "classnames": "^2.5.1",
     "isbot": "^5.1.18",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-bootstrap": "^2.10.6",
+    "bootstrap": "^5.3.3",
+    "semantic-ui-react": "^2.1.5",
+    "semantic-ui-css": "^2.5.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.15.1",
@@ -39,7 +43,9 @@
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-plugin-svgr": "^4.3.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "@codux-boards/react-bootstrap": "1.0.0",
+    "@codux-boards/react-semantic": "1.0.8"
   },
   "engines": {
     "node": ">=18.0.0"

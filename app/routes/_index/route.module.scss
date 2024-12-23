@@ -1,0 +1,137 @@
+.bannerImage {
+    object-fit: cover;
+    height: 85vh;
+    width: auto;
+    max-height: 80%;
+    max-width: none;
+    overflow: hidden;
+}
+.contentContainer {
+    width: 60%;
+    height: 60%;
+    background-color: #ededed;
+    overflow: hidden;
+    align-content: center;
+    display: flex;
+    object-fit: none;
+    position: absolute;
+    border-radius: 20px;
+    flex-direction: row;
+    padding: 20px;
+    align-items: start;
+    justify-content: start;
+}
+.pageTitle {
+    font-size: 350%;
+    position: absolute;
+    left: 5%;
+    top: 5%;
+    color: #262626;
+}
+.navigationBar {
+    position: absolute;
+    width: 90%;
+    height: 10%;
+    bottom: 2%;
+    left: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.button1 {
+    border-radius: 50px;
+    background-color: #808080;
+    opacity: 1;
+}
+.backButton {
+    border: 0px solid #ffffff;
+    background-color: #808080;
+    width: 10%;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 300;
+    margin-right: 6%;
+    height: 60%;
+}
+.progressCircle {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #808080;
+    border-radius: 50px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    align-content: start;
+    margin: 10px;
+}
+.span1 {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 18px;
+    color: #808080;
+    font-weight: 600;
+    font-size: 12px;
+}
+.separatorLine {
+    width: 25%;
+    height: 2px;
+    background-color: #808080;
+}
+.nextbutton {
+    background-color: #808080;
+    border: 0px solid black;
+    border-radius: 50px;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 300;
+    margin-left: 6%;
+    height: 60%;
+}
+.segmentContainer {
+    width: 90%;
+    height: 50%;
+    display: flex;
+    align-self: center;
+    position: absolute;
+    left: 5%;
+    justify-content: space-around;
+}
+.segmentBlock {
+    height: 100%;
+    width: 24%;
+    border-radius: 20px;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3%;
+}
+.segmentImage {
+    object-fit: contain;
+    background-color: #efefef;
+    border-radius: 150px;
+    width: 75%;
+    aspect-ratio: 1;
+    margin-top: 0%;
+    margin-right: 0%;
+    margin-left: 0%;
+    margin-bottom: 0%;
+}
+.segmentName {
+    color: #3d3d3d;
+    font-weight: 600;
+    font-size: 30px;
+    position: absolute;
+    bottom: 10%;
+}
