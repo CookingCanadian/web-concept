@@ -23,10 +23,10 @@
 }
 .pageTitle {
     font-size: 350%;
-    position: absolute;
     left: 5%;
     top: 5%;
     color: #262626;
+    position: absolute;
 }
 .navigationBar {
     position: absolute;
@@ -53,9 +53,14 @@
     align-items: center;
     justify-content: center;
     color: var(--white);
-    font-weight: 300;
+    font-weight: 500;
     margin-right: 6%;
     height: 60%;
+    cursor: pointer;
+}
+.backButton:disabled {
+    cursor: not-allowed;
+    background-color: #bdbdbd; 
 }
 .progressCircle {
     position: relative;
@@ -85,7 +90,22 @@
     height: 2px;
     background-color: #808080;
 }
-.nextbutton {
+.nextButtonEnabled {
+    background-color: #e50914;
+    border: 0px solid black;
+    border-radius: 50px;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 500;
+    margin-left: 6%;
+    height: 60%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.nextButtonDisabled {
     background-color: #808080;
     border: 0px solid black;
     border-radius: 50px;
@@ -94,18 +114,19 @@
     align-items: center;
     justify-content: center;
     color: var(--white);
-    font-weight: 300;
+    font-weight: 500;
     margin-left: 6%;
     height: 60%;
+    cursor: not-allowed;
+    transition: background-color 0.3s ease;
 }
 .segmentContainer {
     width: 90%;
     height: 50%;
     display: flex;
-    align-self: center;
-    position: absolute;
     left: 5%;
     justify-content: space-around;
+    align-self: center;
 }
 .segmentBlock {
     height: 100%;
@@ -133,5 +154,31 @@
     font-weight: 600;
     font-size: 30px;
     position: absolute;
-    bottom: 10%;
+    bottom: 35%;
+}
+.segmentButton {
+    width: 24%;
+    height: 120%;
+    background-color: #fafafa;
+    border: 4px solid #bdbdbd;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3%;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+}
+.segmentButton.activeSegment {
+    border: 4px solid #e50914;
+}
+.segmentPage {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: 100%;
+    height: 90%;
+    align-self: start;
+    left: 0%;
+    justify-content: center;
 }
