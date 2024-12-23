@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { getUrlOriginWithPath } from '~/utils';
 import styles from './_index.module.scss';
@@ -7,6 +7,8 @@ import GymIconCopy1Png from '../../../src/assets/gym_icon_copy1.png';
 import OfficeIconPng from '../../../src/assets/office_icon.png';
 import SchoolIconPng from '../../../src/assets/school_icon.png';
 import HotelIconPng from '../../../src/assets/hotel_icon.png';
+import data from './data';
+import classNames from 'classnames';
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
     return { canonicalUrl: getUrlOriginWithPath(request.url) };
@@ -14,32 +16,53 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 
 export default function HomePage() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedSegment, setselectedSegment] = useState<string | null>(null);
+    const [selectedSegment, setSelectedSegment] = useState<string | null>(null);
     const [isNextEnabled, setIsNextEnabled] = useState(false);
+    const [transitionDirection, setTransitionDirection] = useState<'left' | 'right' | null>(null);
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     const segmentClick = (segmentName: string) => {
-        setselectedSegment(segmentName);
+        setSelectedSegment(segmentName);
         setIsNextEnabled(true);
+    };
+
+    const handleTransition = (direction: 'left' | 'right', pageUpdate: () => void) => {
+        if (isTransitioning) return;
+        setTransitionDirection(direction);
+        setIsTransitioning(true);
+
+        setTimeout(() => {
+            pageUpdate();
+            setTransitionDirection(null);
+        }, 500);
+
+        setTimeout(() => {
+            setIsTransitioning(false);
+        }, 1000);
     };
 
     const handleNext = () => {
         if (currentPage < 3) {
-            setCurrentPage((prev) => prev + 1);
-            setIsNextEnabled(currentPage === 1 ? !!selectedSegment : false);
+            handleTransition('right', () => {
+                setCurrentPage((prev) => prev + 1);
+                setIsNextEnabled(currentPage === 1 ? !!selectedSegment : false);
+            });
         }
     };
 
     const handleBack = () => {
         if (currentPage > 1) {
-            setCurrentPage((prev) => prev - 1);
-        } 
+            handleTransition('left', () => {
+                setCurrentPage((prev) => prev - 1);
+            });
+        }
     };
 
     const renderContent = () => {
         switch (currentPage) {
             case 1:
                 return (
-                    <div className={styles0.segmentPage}>
+                    <div className={styles0.contentPage}>
                         <h1 className={styles0.pageTitle}>Select Segment</h1>
                         <div className={styles0.segmentContainer}>
                             {[
@@ -62,10 +85,23 @@ export default function HomePage() {
                         </div>
                     </div>
                 );
-            default: 
-                return <div>Unkown Page</div>;
+            case 2:
+                return (
+                    <div className={styles0.contentPage}>
+                        <h1 className={styles0.pageTitle}>Select Quantity</h1>
+                        <div className={styles0.segmentScroll}>
+                            <div className={styles0.quantityElement}>
+                                <span className={styles0.quantityName}>Quantity Name</span>
+                                <input type="number" className={styles0.quantityInput} />
+                            </div>
+                        </div>
+                    </div>
+                );
+            default:
+                return <div>Unknown Page</div>;
         }
     };
+
     return (
         <div className={styles.root}>
             <img
@@ -73,13 +109,32 @@ export default function HomePage() {
                 className={styles0.bannerImage}
             />
             <div className={styles0.contentContainer}>
-                {renderContent()}
+                <div
+                    className={classNames(
+                        styles0.transitionContainer,
+                        transitionDirection === 'right' && styles0.slideOutRight,
+                        transitionDirection === 'left' && styles0.slideOutLeft,
+                        transitionDirection === null && styles0.slideIn
+                    )}
+                >
+                    {renderContent()}
+                </div>
 
                 <div className={styles0.navigationBar}>
-                    <button className={styles0.backButton} disabled={currentPage === 1} onClick={handleBack}>
+                    <button
+                        className={styles0.backButton}
+                        disabled={currentPage === 1}
+                        onClick={handleBack}
+                    >
                         Back
                     </button>
-                    <div className={styles0.progressCircle}>
+                    <div
+                        className={
+                            selectedSegment
+                                ? `${styles0.progressCircle} ${styles0.progressCircleActive}`
+                                : styles0.progressCircle
+                        }
+                    >
                         <span className={styles0.span1}>Segment</span>
                     </div>
                     <div className={styles0.separatorLine} />
@@ -90,7 +145,13 @@ export default function HomePage() {
                     <div className={styles0.progressCircle}>
                         <span className={styles0.span1}>Location</span>
                     </div>
-                    <button className={isNextEnabled ? styles0.nextButtonEnabled : styles0.nextButtonDisabled} disabled={!isNextEnabled} onClick={handleNext}>
+                    <button
+                        className={
+                            isNextEnabled ? styles0.nextButtonEnabled : styles0.nextButtonDisabled
+                        }
+                        disabled={!isNextEnabled}
+                        onClick={handleNext}
+                    >
                         Next
                     </button>
                 </div>
