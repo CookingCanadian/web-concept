@@ -30,13 +30,18 @@
 }
 .navigationBar {
     position: absolute;
-    width: 90%;
-    height: 10%;
-    bottom: 2%;
-    left: 5%;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    transition: transform 0.5s ease-in-out;
+    left: 5%;
+    width: 90%;
+    height: 10%;
+    align-self: end;
+    bottom: 10px;
+}
+.navigationBar.slideOut {
+    transform: translateY(100%);
 }
 .button1 {
     border-radius: 50px;
@@ -79,7 +84,7 @@
     border-color: #e50914;
     transition: background-color 0.3s ease;
 }
-.span1 {
+.progressName {
     display: flex;
     align-items: center;
     align-content: center;
@@ -89,6 +94,7 @@
     color: #808080;
     font-weight: 600;
     font-size: 12px;
+    transition: font-size 0.3s ease-in-out;
 }
 .separatorLine {
     width: 25%;
@@ -340,4 +346,15 @@
 }
 .facilityInput:focus {
     outline-color: #e50914;
+}
+.fontHighlight {
+    font-weight: 800;
+    font-size: 14px;
+    color: #3d3d3d;
+}
+
+.fontNotlight {
+    font-weight: 600;
+    font-size: 12px;
+    color: #808080;
 }

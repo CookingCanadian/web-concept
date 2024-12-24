@@ -17,14 +17,13 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 export default function HomePage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isNextEnabled, setIsNextEnabled] = useState(false);
-
     const [selectedSegment, setSelectedSegment] = useState<string | null>(null);
-    const segmentData = selectedSegment ? data[selectedSegment as keyof typeof data] : {};
     const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
-    const [facilityLocation, setFacilityLocation] = useState("");
-
+    const [facilityLocation, setFacilityLocation] = useState('');
     const [transitionDirection, setTransitionDirection] = useState<'left' | 'right' | null>(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
+
+    const segmentData = selectedSegment ? data[selectedSegment as keyof typeof data] : {};
 
     const segmentClick = (segmentName: string) => {
         setSelectedSegment(segmentName);
@@ -47,22 +46,21 @@ export default function HomePage() {
     };
 
     const handleNext = () => {
-        if (currentPage < 3) {
+        if (currentPage < 4) {
             let isNextEnabled = false;
-    
-            if (currentPage === 2) {
-                const hasNonZeroValue = Object.values(inputValues).some((val) => val !== 0);
-                isNextEnabled = hasNonZeroValue;
-            } else if (currentPage === 3) {
-                const isFacilityFilled = facilityLocation.trim() !== "";
-                isNextEnabled = isFacilityFilled;
+
+            if (currentPage === 1) {
+                isNextEnabled = Object.values(inputValues).some((val) => val !== 0);
+            } else if (currentPage === 2) {
+                isNextEnabled = facilityLocation.trim() !== '';
             }
-    
             setIsNextEnabled(isNextEnabled);
-    
+
             handleTransition('right', () => {
                 setCurrentPage((prev) => prev + 1);
             });
+        } else if (currentPage === 3) {
+            setIsNextEnabled(false);
         }
     };
 
@@ -99,8 +97,8 @@ export default function HomePage() {
         const value = event.target.value;
         setFacilityLocation(value);
 
-        setIsNextEnabled(value.trim() !== "");
-    }
+        setIsNextEnabled(value.trim() !== '');
+    };
 
     const renderContent = () => {
         switch (currentPage) {
@@ -168,6 +166,13 @@ export default function HomePage() {
                         />
                     </div>
                 );
+            case 4:
+                return (
+                    <div className={styles0.contentPage}>
+                        <h1 className={styles0.pageTitle}>Estimated Savings</h1>
+                        
+                    </div>
+                )
             default:
                 return <div>Unknown Page</div>;
         }
@@ -191,25 +196,81 @@ export default function HomePage() {
                     {renderContent()}
                 </div>
 
-                <div className={styles0.navigationBar}>
-                    <button className={styles0.backButton} disabled={currentPage === 1} onClick={handleBack}>
+                <div className={`${styles0.navigationBar} ${currentPage === 4 ? styles0.slideOut : ''}`}>
+                    <button
+                        className={styles0.backButton}
+                        disabled={currentPage === 1}
+                        onClick={handleBack}
+                    >
                         Back
                     </button>
-                    <div className={selectedSegment ? `${styles0.progressCircle} ${styles0.progressCircleActive}` : styles0.progressCircle}>
-                        <span className={styles0.span1}>Segment</span>
+
+                    <div
+                        className={
+                            selectedSegment
+                                ? `${styles0.progressCircle} ${styles0.progressCircleActive}`
+                                : styles0.progressCircle
+                        }
+                    >
+                        <span
+                            className={classNames(
+                                styles0.progressName,
+                                currentPage === 1 ? styles0.fontHighlight : styles0.fontNolight
+                            )}
+                        >
+                            Segment
+                        </span>
                     </div>
+
                     <div className={styles0.separatorLine} />
-                    <div className={Object.values(inputValues).some((val) => val !== 0) ? `${styles0.progressCircle} ${styles0.progressCircleActive}` : styles0.progressCircle}>
-                        <span className={styles0.span1}>Quantity</span>
+
+                    <div
+                        className={
+                            Object.values(inputValues).some((val) => val !== 0)
+                                ? `${styles0.progressCircle} ${styles0.progressCircleActive}`
+                                : styles0.progressCircle
+                        }
+                    >
+                        <span
+                            className={classNames(
+                                styles0.progressName,
+                                currentPage === 2 ? styles0.fontHighlight : styles0.fontNolight
+                            )}
+                        >
+                            Quantity
+                        </span>
                     </div>
+
                     <div className={styles0.separatorLine} />
-                    <div className={facilityLocation.trim() !== "" ? `${styles0.progressCircle} ${styles0.progressCircleActive}` : styles0.progressCircle}>
-                        <span className={styles0.span1}>Location</span>
+
+                    <div
+                        className={
+                            facilityLocation.trim() !== ''
+                                ? `${styles0.progressCircle} ${styles0.progressCircleActive}`
+                                : styles0.progressCircle
+                        }
+                    >
+                        <span
+                            className={classNames(
+                                styles0.progressName,
+                                currentPage === 3 ? styles0.fontHighlight : styles0.fontNolight
+                            )}
+                        >
+                            Location
+                        </span>
                     </div>
-                    <button className={isNextEnabled ? styles0.nextButtonEnabled : styles0.nextButtonDisabled} disabled={!isNextEnabled} onClick={handleNext}>
+
+                    <button
+                        className={
+                            isNextEnabled ? styles0.nextButtonEnabled : styles0.nextButtonDisabled
+                        }
+                        disabled={!isNextEnabled}
+                        onClick={handleNext}
+                    >
                         Next
                     </button>
                 </div>
+
             </div>
         </div>
     );
