@@ -170,9 +170,35 @@ export default function HomePage() {
                 return (
                     <div className={styles0.contentPage}>
                         <h1 className={styles0.pageTitle}>Estimated Savings</h1>
-                        
+                        <div className={styles0.annualPanel}>
+                            <span className={styles0.savingsTitle}>Annual Gross</span>
+                            <div className={styles0.annualResultsContainer}>
+                                <span className={styles0.annualMoney}>$0.00</span>
+                                <span className={styles0.annualPlugs}>using 0 plugs</span>
+                            </div>
+                        </div>
+                        <div className={styles0.monthlyPanel}>
+                            <span className={styles0.savingsTitle}>Monthly </span>
+                            <div className={styles0.calculationContainer}>
+                                <span className={styles0.calculationEntry}>
+                                    + Monthly Savings ($0)
+                                </span>
+                                <span className={styles0.calculationEntry}>- Gain Share ($0)</span>
+                                <div className={styles0.calculationLine} />
+                                <span className={styles0.calculationEntry}>+ $0</span>
+                            </div>
+                        </div>
+                        <div className={styles0.actionCall}>
+                            <span className={styles0.savingsTitle}>Plug in. Start Saving.</span>
+                            <p className={styles0.p1}>
+                                Revert Technologies&apos; AI powered energy saving platform cuts
+                                electricity bills by turning equipment all the way off. Just plug in
+                                to save!
+                            </p>
+                            <button className={styles0.orderButton}>ORDER &gt;&gt;</button>
+                        </div>
                     </div>
-                )
+                );
             default:
                 return <div>Unknown Page</div>;
         }
@@ -196,7 +222,11 @@ export default function HomePage() {
                     {renderContent()}
                 </div>
 
-                <div className={`${styles0.navigationBar} ${currentPage === 4 ? styles0.slideOut : ''}`}>
+                <div
+                    className={`${styles0.navigationBar} ${
+                        currentPage === 4 ? styles0.slideOut : ''
+                    }`}
+                >
                     <button
                         className={styles0.backButton}
                         disabled={currentPage === 1}
@@ -270,7 +300,6 @@ export default function HomePage() {
                         Next
                     </button>
                 </div>
-
             </div>
         </div>
     );
