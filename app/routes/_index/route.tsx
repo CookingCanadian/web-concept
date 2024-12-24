@@ -211,7 +211,7 @@ export default function HomePage() {
                         <div className={styles0.annualPanel}>
                             <span className={styles0.savingsTitle}>Annual Gross</span>
                             <div className={styles0.annualResultsContainer}>
-                                <span className={styles0.annualMoney}>${annualGross}</span>
+                                <span className={styles0.annualMoney}>${annualGross.toFixed(2)}</span>
                                 <span className={styles0.annualPlugs}>using {numberOfPlugs} {numberOfPlugs === 1 ? 'plug' : 'plugs'}</span>
                             </div>
                         </div>
@@ -219,11 +219,11 @@ export default function HomePage() {
                             <span className={styles0.savingsTitle}>Monthly </span>
                             <div className={styles0.calculationContainer}>
                                 <span className={styles0.calculationEntry}>
-                                    + Monthly Savings (${monthlySavings})
+                                    + Monthly Savings (${monthlySavings.toFixed(2)})
                                 </span>
-                                <span className={styles0.calculationEntry}>- Gain Share (${gainShare})</span>
+                                <span className={styles0.calculationEntry}>- Gain Share (${gainShare.toFixed(2)})</span>
                                 <div className={styles0.calculationLine} />
-                                <span className={styles0.calculationEntry}>+ ${finalSavings}</span>
+                                <span className={styles0.calculationEntry}>+ ${finalSavings.toFixed(2)}</span>
                             </div>
                         </div>
                         <div className={styles0.actionCall}>

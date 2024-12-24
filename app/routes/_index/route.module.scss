@@ -7,7 +7,7 @@
     overflow: hidden;
 }
 .contentContainer {
-    width: 56%;
+    width: 54%;
     height: 60%;
     background-color: #ededed;
     overflow: hidden;
@@ -36,9 +36,9 @@
     transition: transform 0.5s ease-in-out;
     left: 5%;
     width: 90%;
-    height: 10%;
+    height: 11%;
     align-self: end;
-    bottom: 10px;
+    bottom: 11px;
 }
 .navigationBar.slideOut {
     transform: translateY(100%);
