@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { getUrlOriginWithPath } from '~/utils';
 import styles from './_index.module.scss';
@@ -61,6 +61,7 @@ export default function HomePage() {
             });
         } else if (currentPage === 3) {
             setIsNextEnabled(false);
+         
         }
     };
 
@@ -100,6 +101,43 @@ export default function HomePage() {
         setIsNextEnabled(value.trim() !== '');
     };
 
+    const costPerKwh = 0.18;
+
+    const calculateSavings = () => {
+        if (!selectedSegment) return { annualGross: 0, monthlySavings: 0, gainShare: 0, finalSavings: 0, numberOfPlugs: 0 };
+
+        const devices = data[selectedSegment as keyof typeof data];
+        
+        let annualEnergyWaste = 0;
+        let numberOfPlugs = 0;
+
+        Object.entries(devices).forEach(([deviceName, energyWaste]) => {
+            const quantity = inputValues[deviceName] || 0;
+
+            annualEnergyWaste += energyWaste * quantity;
+
+            if (deviceName === "Elliptical Machines") {
+                numberOfPlugs += Math.ceil(quantity / 4); 
+            } else if (deviceName === "Exercise Bikes") {
+                numberOfPlugs += Math.ceil(quantity / 2); 
+            } else {
+                numberOfPlugs += quantity; 
+            }
+        });
+
+        const annualGross = annualEnergyWaste * costPerKwh;
+        const monthlySavings = annualGross / 12;
+        const gainShare = monthlySavings * 0.5;
+        const finalSavings = monthlySavings - gainShare;
+
+        return { annualGross, monthlySavings, gainShare, finalSavings, numberOfPlugs };
+    };
+
+    const { annualGross, monthlySavings, gainShare, finalSavings, numberOfPlugs } = calculateSavings();
+
+    const handleOrderClick = () => {
+        window.location.href = "https://reverttechnologies.com/products/revert-plug-load-diagnostic-pilot-pack";
+    }
     const renderContent = () => {
         switch (currentPage) {
             case 1:
@@ -173,19 +211,19 @@ export default function HomePage() {
                         <div className={styles0.annualPanel}>
                             <span className={styles0.savingsTitle}>Annual Gross</span>
                             <div className={styles0.annualResultsContainer}>
-                                <span className={styles0.annualMoney}>$0.00</span>
-                                <span className={styles0.annualPlugs}>using 0 plugs</span>
+                                <span className={styles0.annualMoney}>${annualGross}</span>
+                                <span className={styles0.annualPlugs}>using {numberOfPlugs} {numberOfPlugs === 1 ? 'plug' : 'plugs'}</span>
                             </div>
                         </div>
                         <div className={styles0.monthlyPanel}>
                             <span className={styles0.savingsTitle}>Monthly </span>
                             <div className={styles0.calculationContainer}>
                                 <span className={styles0.calculationEntry}>
-                                    + Monthly Savings ($0)
+                                    + Monthly Savings (${monthlySavings})
                                 </span>
-                                <span className={styles0.calculationEntry}>- Gain Share ($0)</span>
+                                <span className={styles0.calculationEntry}>- Gain Share (${gainShare})</span>
                                 <div className={styles0.calculationLine} />
-                                <span className={styles0.calculationEntry}>+ $0</span>
+                                <span className={styles0.calculationEntry}>+ ${finalSavings}</span>
                             </div>
                         </div>
                         <div className={styles0.actionCall}>
@@ -195,7 +233,7 @@ export default function HomePage() {
                                 electricity bills by turning equipment all the way off. Just plug in
                                 to save!
                             </p>
-                            <button className={styles0.orderButton}>ORDER &gt;&gt;</button>
+                            <button className={styles0.orderButton} onClick={handleOrderClick}>ORDER &gt;&gt;</button>
                         </div>
                     </div>
                 );

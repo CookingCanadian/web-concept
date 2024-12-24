@@ -61,5 +61,3 @@ const sampleData = {
 }
 
 export default sampleData;
-
-// https://reverttechnologies.com/products/revert-plug-load-diagnostic-pilot-pack
