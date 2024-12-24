@@ -16,8 +16,12 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 
 export default function HomePage() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedSegment, setSelectedSegment] = useState<string | null>(null);
     const [isNextEnabled, setIsNextEnabled] = useState(false);
+
+    const [selectedSegment, setSelectedSegment] = useState<string | null>(null);
+    const segmentData = selectedSegment ? data[selectedSegment as keyof typeof data] : {};
+    const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
+
     const [transitionDirection, setTransitionDirection] = useState<'left' | 'right' | null>(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -43,9 +47,12 @@ export default function HomePage() {
 
     const handleNext = () => {
         if (currentPage < 3) {
+            const hasNonZeroValue = Object.values(inputValues).some((val) => val !== 0);
+
+            setIsNextEnabled(currentPage === 2 ? hasNonZeroValue : false);
+
             handleTransition('right', () => {
                 setCurrentPage((prev) => prev + 1);
-                setIsNextEnabled(currentPage === 1 ? !!selectedSegment : false);
             });
         }
     };
@@ -58,6 +65,30 @@ export default function HomePage() {
         }
     };
 
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        itemName: string
+    ) => {
+        let value = parseInt(event.target.value, 10);
+    
+        if (value < 0) {
+          value = 0; 
+        }
+    
+        setInputValues((prevState) => {
+            const updatedValues = { ...prevState, [itemName]: value };
+            const hasNonZeroValue = Object.values(updatedValues).some((val) => val !== 0);
+            
+            setIsNextEnabled(currentPage === 2 ? hasNonZeroValue : false);
+      
+            return updatedValues;
+        });
+    };
+
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        event.target.value = '';
+    };
+    
     const renderContent = () => {
         switch (currentPage) {
             case 1:
@@ -90,10 +121,19 @@ export default function HomePage() {
                     <div className={styles0.contentPage}>
                         <h1 className={styles0.pageTitle}>Select Quantity</h1>
                         <div className={styles0.segmentScroll}>
-                            <div className={styles0.quantityElement}>
-                                <span className={styles0.quantityName}>Quantity Name</span>
-                                <input type="number" className={styles0.quantityInput} />
-                            </div>
+                            {Object.keys(segmentData).map((itemName) => (
+                                <div key={itemName} className={styles0.quantityElement}>
+                                <span className={styles0.quantityName}>{itemName}</span>
+                                <input
+                                    type="number"
+                                    className={styles0.quantityInput}                                 
+                                    value={inputValues[itemName] || 0}
+                                    onFocus={handleFocus}
+                                    onChange={(e) => handleInputChange(e, itemName)}
+                                    onBlur={(e) => e.target.value = (inputValues[itemName] || 0).toString()}
+                                />
+                                </div>
+                            ))}                            
                         </div>
                     </div>
                 );
@@ -128,17 +168,11 @@ export default function HomePage() {
                     >
                         Back
                     </button>
-                    <div
-                        className={
-                            selectedSegment
-                                ? `${styles0.progressCircle} ${styles0.progressCircleActive}`
-                                : styles0.progressCircle
-                        }
-                    >
+                    <div className={selectedSegment ? `${styles0.progressCircle} ${styles0.progressCircleActive}` : styles0.progressCircle}>
                         <span className={styles0.span1}>Segment</span>
                     </div>
                     <div className={styles0.separatorLine} />
-                    <div className={styles0.progressCircle}>
+                    <div className={Object.values(inputValues).some((val) => val !== 0) ? `${styles0.progressCircle} ${styles0.progressCircleActive}` : styles0.progressCircle}>
                         <span className={styles0.span1}>Quantity</span>
                     </div>
                     <div className={styles0.separatorLine} />

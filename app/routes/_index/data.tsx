@@ -1,5 +1,5 @@
 const sampleData = {
-    gym: {
+    Gym: {
         "Audio Control Stacks": 2400,
         "Display Screens": 1765,
         "Elliptical Machines": 1250,
@@ -12,7 +12,7 @@ const sampleData = {
         "Water Coolers": 725,
         "Water Fountains": 146
       },
-    office: {
+    Office: {
         "Air Purifiers": 244,
         "Charging Stations": 1752,
         "Coffee Brewers": 830,
@@ -25,7 +25,7 @@ const sampleData = {
         "Vending Machines": 7100,
         "Water Coolers": 725
     },
-    school: {
+    School: {
         "3D Printers": 224,
         "Air Purifiers": 244,
         "Charging Stations": 1752,
@@ -44,7 +44,7 @@ const sampleData = {
         "Water Fountains": 146,
         "Projectors": 3942
     },
-    hotel: {
+    Hotel: {
         "Charging Stations": 1752,
         "Coffee Brewers": 830,
         "Conference Hubs": 650,
