@@ -223,7 +223,7 @@
     padding-right: 12px;
 }
 .segmentScroll::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 .segmentScroll::-webkit-scrollbar-track {
     background-color: transparent;
@@ -233,7 +233,7 @@
     display: none;
 }
 .segmentScroll::-webkit-scrollbar-thumb {
-    background-color: #888;
+    background-color: #d9dcdb;
     border-radius: 10px;
 }
 .quantityElement {
@@ -279,5 +279,65 @@
     -webkit-appearance: none;
 }
 .quantityInput:focus {
+    outline-color: #e50914;
+}
+.div1 {
+    width: 100%;
+    height: 5px;
+}
+.topFade {
+    position: fixed;
+    left: 5%;
+    background-image: linear-gradient(180deg, #ededed 0%, rgba(255, 255, 255, 0) 100%);
+    background-color: transparent;
+    background-position: 0% 0%;
+    background-size: auto;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-origin: padding-box;
+    background-clip: border-box;
+    top: 20%;
+    height: 15px;
+    width: 89%;
+}
+.bottomFade {
+    width: 89%;
+    height: 15px;
+    position: absolute;
+    left: 5%;
+    bottom: 10%;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ededed 100%);
+    background-color: transparent;
+    background-position: 0% 0%;
+    background-size: auto;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-origin: padding-box;
+    background-clip: border-box;
+}
+.address1 {
+    width: 100px;
+    height: 100px;
+}
+.facilityInput {
+    width: 80%;
+    height: 10%;
+    position: absolute;
+    left: 5%;
+    border-radius: 50px;
+    border: 0px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    top: 20%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: #f8f8f8;
+    font-size: 20px;
+    font-weight: 500;
+}
+.facilityInput:focus {
     outline-color: #e50914;
 }

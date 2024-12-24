@@ -21,6 +21,7 @@ export default function HomePage() {
     const [selectedSegment, setSelectedSegment] = useState<string | null>(null);
     const segmentData = selectedSegment ? data[selectedSegment as keyof typeof data] : {};
     const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
+    const [facilityLocation, setFacilityLocation] = useState("");
 
     const [transitionDirection, setTransitionDirection] = useState<'left' | 'right' | null>(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -47,10 +48,18 @@ export default function HomePage() {
 
     const handleNext = () => {
         if (currentPage < 3) {
-            const hasNonZeroValue = Object.values(inputValues).some((val) => val !== 0);
-
-            setIsNextEnabled(currentPage === 2 ? hasNonZeroValue : false);
-
+            let isNextEnabled = false;
+    
+            if (currentPage === 2) {
+                const hasNonZeroValue = Object.values(inputValues).some((val) => val !== 0);
+                isNextEnabled = hasNonZeroValue;
+            } else if (currentPage === 3) {
+                const isFacilityFilled = facilityLocation.trim() !== "";
+                isNextEnabled = isFacilityFilled;
+            }
+    
+            setIsNextEnabled(isNextEnabled);
+    
             handleTransition('right', () => {
                 setCurrentPage((prev) => prev + 1);
             });
@@ -65,22 +74,19 @@ export default function HomePage() {
         }
     };
 
-    const handleInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        itemName: string
-    ) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, itemName: string) => {
         let value = parseInt(event.target.value, 10);
-    
+
         if (value < 0) {
-          value = 0; 
+            value = 0;
         }
-    
+
         setInputValues((prevState) => {
             const updatedValues = { ...prevState, [itemName]: value };
             const hasNonZeroValue = Object.values(updatedValues).some((val) => val !== 0);
-            
+
             setIsNextEnabled(currentPage === 2 ? hasNonZeroValue : false);
-      
+
             return updatedValues;
         });
     };
@@ -88,7 +94,14 @@ export default function HomePage() {
     const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         event.target.value = '';
     };
-    
+
+    const handleFacilityInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setFacilityLocation(value);
+
+        setIsNextEnabled(value.trim() !== "");
+    }
+
     const renderContent = () => {
         switch (currentPage) {
             case 1:
@@ -123,18 +136,36 @@ export default function HomePage() {
                         <div className={styles0.segmentScroll}>
                             {Object.keys(segmentData).map((itemName) => (
                                 <div key={itemName} className={styles0.quantityElement}>
-                                <span className={styles0.quantityName}>{itemName}</span>
-                                <input
-                                    type="number"
-                                    className={styles0.quantityInput}                                 
-                                    value={inputValues[itemName] || 0}
-                                    onFocus={handleFocus}
-                                    onChange={(e) => handleInputChange(e, itemName)}
-                                    onBlur={(e) => e.target.value = (inputValues[itemName] || 0).toString()}
-                                />
+                                    <span className={styles0.quantityName}>{itemName}</span>
+                                    <input
+                                        type="number"
+                                        className={styles0.quantityInput}
+                                        value={inputValues[itemName] || 0}
+                                        onFocus={handleFocus}
+                                        onChange={(e) => handleInputChange(e, itemName)}
+                                        onBlur={(e) =>
+                                            (e.target.value = (
+                                                inputValues[itemName] || 0
+                                            ).toString())
+                                        }
+                                    />
                                 </div>
-                            ))}                            
+                            ))}
                         </div>
+                        <div className={styles0.topFade} />
+                        <div className={styles0.bottomFade} />
+                    </div>
+                );
+            case 3:
+                return (
+                    <div className={styles0.contentPage}>
+                        <h1 className={styles0.pageTitle}>Facility Location</h1>
+                        <input
+                            className={styles0.facilityInput}
+                            placeholder="123 Energy Saving Ave, Brunswick, Maine"
+                            value={facilityLocation}
+                            onChange={handleFacilityInput}
+                        />
                     </div>
                 );
             default:
@@ -161,11 +192,7 @@ export default function HomePage() {
                 </div>
 
                 <div className={styles0.navigationBar}>
-                    <button
-                        className={styles0.backButton}
-                        disabled={currentPage === 1}
-                        onClick={handleBack}
-                    >
+                    <button className={styles0.backButton} disabled={currentPage === 1} onClick={handleBack}>
                         Back
                     </button>
                     <div className={selectedSegment ? `${styles0.progressCircle} ${styles0.progressCircleActive}` : styles0.progressCircle}>
@@ -176,16 +203,10 @@ export default function HomePage() {
                         <span className={styles0.span1}>Quantity</span>
                     </div>
                     <div className={styles0.separatorLine} />
-                    <div className={styles0.progressCircle}>
+                    <div className={facilityLocation.trim() !== "" ? `${styles0.progressCircle} ${styles0.progressCircleActive}` : styles0.progressCircle}>
                         <span className={styles0.span1}>Location</span>
                     </div>
-                    <button
-                        className={
-                            isNextEnabled ? styles0.nextButtonEnabled : styles0.nextButtonDisabled
-                        }
-                        disabled={!isNextEnabled}
-                        onClick={handleNext}
-                    >
+                    <button className={isNextEnabled ? styles0.nextButtonEnabled : styles0.nextButtonDisabled} disabled={!isNextEnabled} onClick={handleNext}>
                         Next
                     </button>
                 </div>
