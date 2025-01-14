@@ -30,7 +30,7 @@ export default function HomePage() {
         setIsNextEnabled(true);
     };
 
-    const handleTransition = (direction: 'left' | 'right', pageUpdate: () => void) => {
+    const handleTransition = (direction: 'left' | 'right', pageUpdate: () => void) => { 
         if (isTransitioning) return;
         setTransitionDirection(direction);
         setIsTransitioning(true);
@@ -45,7 +45,7 @@ export default function HomePage() {
         }, 1000);
     };
 
-    const handleNext = () => {
+    const handleNext = () => { {/* handle next button, but the next/back buttons don't show up on the final page */}
         if (currentPage < 4) {
             let isNextEnabled = false;
 
@@ -65,7 +65,7 @@ export default function HomePage() {
         }
     };
 
-    const handleBack = () => {
+    const handleBack = () => { {/* handle back button */}
         if (currentPage > 1) {
             handleTransition('left', () => {
                 setCurrentPage((prev) => prev - 1);
@@ -76,7 +76,7 @@ export default function HomePage() {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, itemName: string) => {
         let value = parseInt(event.target.value, 10);
 
-        if (value < 0) {
+        if (value < 0) { {/* make sure input is positive */}
             value = 0;
         }
 
@@ -94,14 +94,14 @@ export default function HomePage() {
         event.target.value = '';
     };
 
-    const handleFacilityInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFacilityInput = (event: React.ChangeEvent<HTMLInputElement>) => { {/* incomplete */}
         const value = event.target.value;
         setFacilityLocation(value);
 
         setIsNextEnabled(value.trim() !== '');
     };
 
-    const costPerKwh = 0.18;
+    const costPerKwh = 0.18; {/* currently set to 18 cents per kWh, page 3 is not fully coded for location */}
 
     const calculateSavings = () => {
         if (!selectedSegment) return { annualGross: 0, monthlySavings: 0, gainShare: 0, finalSavings: 0, numberOfPlugs: 0 };
@@ -116,7 +116,7 @@ export default function HomePage() {
 
             annualEnergyWaste += energyWaste * quantity;
 
-            if (deviceName === "Elliptical Machines") {
+            if (deviceName === "Elliptical Machines") { {/* exceptions for how these devices were plugged into the smart plugs */}
                 numberOfPlugs += Math.ceil(quantity / 4); 
             } else if (deviceName === "Exercise Bikes") {
                 numberOfPlugs += Math.ceil(quantity / 2); 
@@ -136,17 +136,17 @@ export default function HomePage() {
     const { annualGross, monthlySavings, gainShare, finalSavings, numberOfPlugs } = calculateSavings();
 
     const handleOrderClick = () => {
-        window.location.href = "https://reverttechnologies.com/products/revert-plug-load-diagnostic-pilot-pack";
+        window.location.href = "https://reverttechnologies.com/products/revert-plug-load-diagnostic-pilot-pack"; {/* where the ORDER button should take the user */}
     }
-    const renderContent = () => {
+    const renderContent = () => { {/* this is a function to handle everything displayed for the actual form, its is returned below */}
         switch (currentPage) {
-            case 1:
+            case 1: //page 1 (select segment)
                 return (
                     <div className={styles0.contentPage}>
                         <h1 className={styles0.pageTitle}>Select Segment</h1>
                         <div className={styles0.segmentContainer}>
                             {[
-                                { name: 'Gym', icon: GymIconCopy1Png },
+                                { name: 'Gym', icon: GymIconCopy1Png }, // under /src/assets
                                 { name: 'Office', icon: OfficeIconPng },
                                 { name: 'School', icon: SchoolIconPng },
                                 { name: 'Hotel', icon: HotelIconPng },
@@ -165,7 +165,7 @@ export default function HomePage() {
                         </div>
                     </div>
                 );
-            case 2:
+            case 2: //page 2 (select quantity)
                 return (
                     <div className={styles0.contentPage}>
                         <h1 className={styles0.pageTitle}>Select Quantity</h1>
@@ -192,7 +192,7 @@ export default function HomePage() {
                         <div className={styles0.bottomFade} />
                     </div>
                 );
-            case 3:
+            case 3: //page 3 (facility location)
                 return (
                     <div className={styles0.contentPage}>
                         <h1 className={styles0.pageTitle}>Facility Location</h1>
@@ -204,7 +204,7 @@ export default function HomePage() {
                         />
                     </div>
                 );
-            case 4:
+            case 4: //page 4 (estimated savings)
                 return (
                     <div className={styles0.contentPage}>
                         <h1 className={styles0.pageTitle}>Estimated Savings</h1>
@@ -214,12 +214,12 @@ export default function HomePage() {
                                 <span className={styles0.annualMoney}>${annualGross.toFixed(2)}</span>
                                 <span className={styles0.annualPlugs}>using {numberOfPlugs} {numberOfPlugs === 1 ? 'plug' : 'plugs'}</span>
                             </div>
-                        </div>
-                        <div className={styles0.monthlyPanel}>
+                        </div>                        
+                        <div className={styles0.monthlyPanel}> {/* show monthly savings, refer to calculateSavings() function above for calculations */}
                             <span className={styles0.savingsTitle}>Monthly </span>
                             <div className={styles0.calculationContainer}>
                                 <span className={styles0.calculationEntry}>
-                                    + Monthly Savings (${monthlySavings.toFixed(2)})
+                                    + Monthly Savings (${monthlySavings.toFixed(2)}) {/* monthlySavings, gainShare, finalSavings are variables, not functions */}
                                 </span>
                                 <span className={styles0.calculationEntry}>- Gain Share (${gainShare.toFixed(2)})</span>
                                 <div className={styles0.calculationLine} />
@@ -233,7 +233,7 @@ export default function HomePage() {
                                 electricity bills by turning equipment all the way off. Just plug in
                                 to save!
                             </p>
-                            <button className={styles0.orderButton} onClick={handleOrderClick}>ORDER &gt;&gt;</button>
+                            <button className={styles0.orderButton} onClick={handleOrderClick}>ORDER &gt;&gt;</button> {/* routing done through function handleOrderClick */}
                         </div>
                     </div>
                 );
@@ -242,7 +242,7 @@ export default function HomePage() {
         }
     };
 
-    return (
+    return ( // this is were the actual stuff is displayed on screen
         <div className={styles.root}>
             <img
                 src="https://reverttechnologies.com/cdn/shop/files/b2.png?v=1730099475"
@@ -257,7 +257,7 @@ export default function HomePage() {
                         transitionDirection === null && styles0.slideIn
                     )}
                 >
-                    {renderContent()}
+                    {renderContent()} {/* this function is defined above */}
                 </div>
 
                 <div
